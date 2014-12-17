@@ -1,80 +1,83 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="pure"
+# disable zsh autocorrect
+unsetopt CORRECT
 
-# ALIASES
+# rbenv
+eval "$(rbenv init -)"
 
-alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+# install z
+. `brew --prefix`/etc/profile.d/z.sh
+
+# pure prompt
+autoload -U promptinit && promptinit
+prompt pure
+
+# meta
 alias zshconfig="subl ~/.zshrc"
-alias ohmyzsh="subl ~/.oh-my-zsh"
+alias preztoconfig="subl ~/.zpreztorc"
+alias reprof='. ~/.zshrc'
+
+# sublime
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+sublimeText() {
+  if [ $1 ]
+  then
+    subl $1
+  else
+    subl .
+  fi
+}
+alias s=sublimeText
+
+# git 
+alias gs='git status '
+alias ga='git add '
+alias gb='git branch '
+alias gc='git commit '
+alias gd='git diff'
+alias go='git checkout '
+alias gk='gitk --all&'
+alias gx='gitx --all'
+alias gdf='git diff --cached'
+alias gcm='git commit -am '
+alias gpom='git push origin master'
+alias gpum='git pull origin master'
+alias ghs="git --no-pager log --color --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit"
+alias gcl="git clone "
+
+eval "$(hub alias -s)"
+
+# files
+mkcd() {
+    mkdir "$1"
+    cd "$1"
+}
+
+touchs() {
+    touch "$1"
+    subl "$1"
+}
+
 alias ls="ls -GFh"
+alias lsa="ls -a"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# other stuff
+alias vtop="vtop --theme monokai"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# hack reactor
+alias hr='cd ~/projects/hr'
+alias hrc='open http://bookstrap.hackreactor.com/curriculum/curriculum'
+alias hra='open http://bookstrap.hackreactor.com/attendance'
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to disable command auto-correction.
-# DISABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# rupa z 
-. ~/repos/z/z.sh
+# clone repo, cd into it, open in sublime
+clone() {
+    url=$1
+    reponame=$(echo $url | awk -F/ '{print $NF}' | sed -e 's/.git$//')
+    git clone $url $reponame
+    cd $reponame
+    subl .
+}
