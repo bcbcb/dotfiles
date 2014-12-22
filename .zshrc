@@ -44,11 +44,11 @@ alias gk='gitk --all&'
 alias gx='gitx --all'
 alias gdf='git diff --cached'
 alias gcm='git commit -am '
-alias gpom='git push origin master'
-alias gpum='git pull origin master'
-alias gups='git pull upstream master'
 alias ghs="git --no-pager log --color --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit"
 alias gcl="git clone "
+alias gpom='git push origin master'
+alias gpull='git pull origin master'
+alias gups='git pull upstream master'
 
 # github
 eval "$(hub alias -s)"
@@ -65,6 +65,8 @@ touchs() {
     touch "$1"
     subl "$1"
 }
+
+#open directory or file in finder
 dirOrFile() {
   if [ $1 ]
   then open $1
@@ -72,7 +74,7 @@ dirOrFile() {
     open .
   fi
 }
-alias o=dirOrFiles
+alias o="dirOrFile"
 
 ltree()
 {
