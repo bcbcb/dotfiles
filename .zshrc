@@ -105,3 +105,5 @@ toy() {
   git pull upstream master
   subl .
 }
+alias toypr="open https://github.com/bcbcb/2014-12-toy-problems/compare/hackreactor:bcbcb...bcbcb:master"
+alias toys="cd ~/projects/hr/2014-12-toy-problems && subl ."
