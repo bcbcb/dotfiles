@@ -33,15 +33,23 @@ sublimeText() {
 }
 alias s=sublimeText
 
+# z search and open in sublime
+zs() {
+  if [ $1 ]
+  then
+    z $1 && s
+  fi
+}
+
 # git 
 alias gs='git status '
-alias ga='git add '
-alias gb='git branch '
-alias gc='git commit '
-alias gd='git diff'
-alias go='git checkout '
-alias gk='gitk --all&'
-alias gx='gitx --all'
+# alias ga='git add '
+# alias gb='git branch '
+# alias gc='git commit '
+# alias gd='git diff'
+alias gco='git checkout '
+# alias gk='gitk --all&'
+# alias gx='gitx --all'
 alias gdf='git diff --cached'
 alias gcm='git commit -am '
 alias ghs="git --no-pager log --color --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit"
@@ -51,9 +59,10 @@ alias gpull='git pull origin master'
 alias gups='git pull upstream master'
 
 # github
-eval "$(hub alias -s)"
+# eval "$(hub alias -s)"
 
 # other stuff
+alias cls="clear"
 alias vtop="vtop --theme monokai"
 
 # files
@@ -61,10 +70,15 @@ mkcd() {
     mkdir "$1"
     cd "$1"
 }
+alias mkd="mkcd"
+
 touchs() {
     touch "$1"
     subl "$1"
 }
+
+alias cd..="cd .."
+
 
 #open directory or file in finder
 dirOrFile() {
@@ -93,7 +107,7 @@ clone() {
 }
 
 # hack reactor
-alias hr='cd ~/projects/hr'
+alias hr='cd ~/projects/hr && ls'
 alias hrc='open http://bookstrap.hackreactor.com/curriculum/curriculum'
 alias hra='open http://bookstrap.hackreactor.com/attendance'
 alias gcal='open https://www.google.com/calendar'
@@ -102,7 +116,7 @@ alias html="open *.html"
 
 toy() {
   cd ~/projects/hr/2014-12-toy-problems
-  git pull upstream master
+  git pull --no-edit upstream master
   subl .
 }
 alias toypr="open https://github.com/bcbcb/2014-12-toy-problems/compare/hackreactor:bcbcb...bcbcb:master"
