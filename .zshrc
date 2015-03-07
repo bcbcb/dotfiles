@@ -21,42 +21,73 @@ alias zshconfig="subl ~/.zshrc"
 alias preztoconfig="subl ~/.zpreztorc"
 alias reprof='. ~/.zshrc'
 
+# iTerm colors
+iterm_bgcolor(){
+  local R=$1
+  local G=$2
+  local B=$3
+  /usr/bin/osascript <<EOF
+tell application "iTerm"
+  tell the current terminal
+    tell the current session
+      set background color to {$(($R*65535/255)), $(($G*65535/255)), $(($B*65535/255))}
+    end tell
+  end tell
+end tell
+EOF
+}
+
+iterm_tabcolor() {
+  echo -ne "\033]6;1;bg;red;brightness;$1\a"
+  echo -ne "\033]6;1;bg;green;brightness;$2\a"
+  echo -ne "\033]6;1;bg;blue;brightness;$3\a"
+}
+
+iterm_resetcolor() {
+  echo -ne "\033]6;1;bg;*;default\a"
+}
+
+
 # sublime
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
-sublimeText() {
-  if [ $1 ]
-  then
-    subl $1
-  else
-    subl .
-  fi
-}
-alias s=sublimeText
 
-# z search and open in sublime
+s(){ subl ${1:-.} }
+# o(){ open ${1:-.} }
+
 zs() {
   if [ $1 ]
   then
-    z $1 && s
+    z $1 && subl .
   fi
 }
 
 # git 
 alias gs='git status '
+alias gco='git checkout '
+
 # alias ga='git add '
 # alias gb='git branch '
-# alias gc='git commit '
 # alias gd='git diff'
 alias gco='git checkout '
 # alias gk='gitk --all&'
 # alias gx='gitx --all'
 alias gdf='git diff --cached'
 alias gcm='git commit -am '
-alias ghs="git --no-pager log --color --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit"
 alias gcl="git clone "
 alias gpom='git push origin master'
-alias gpull='git pull origin master'
-alias gups='git pull upstream master'
+alias gpog='git push origin gh-pages'
+alias gprum='git pull --rebase upstream master'
+
+alias glog="git --no-pager log --color --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit"
+
+ghs() {
+  if [ $1 ]
+    then
+    glog -n $1
+  else
+    glog
+  fi
+}
 
 # github
 # eval "$(hub alias -s)"
@@ -80,19 +111,10 @@ touchs() {
 alias cd..="cd .."
 
 
-#open directory or file in finder
-dirOrFile() {
-  if [ $1 ]
-  then open $1
-  else
-    open .
-  fi
-}
-alias o="dirOrFile"
 
 ltree()
 {
-    tree -C $* | less -R
+  tree -C $* | less -R
 }
 alias ls="ls -GFh"
 alias lsa="ls -a"
@@ -115,9 +137,22 @@ alias spec='open SpecRunner.html'
 alias html="open *.html"
 
 toy() {
+  iterm_bgcolor 10 30 30
+  iterm_tabcolor 200 256 256
   cd ~/projects/hr/2014-12-toy-problems
   git pull --no-edit upstream master
-  subl .
+  subl $(git diff --name-only HEAD~1)
 }
-alias toypr="open https://github.com/bcbcb/2014-12-toy-problems/compare/hackreactor:bcbcb...bcbcb:master"
+
+GITUSERNAME="bcbcb"
+alias toypr="open https://github.com/$GITUSERNAME/2014-12-toy-problems/compare/hackreactor:$GITUSERNAME...$GITUSERNAME:master"
 alias toys="cd ~/projects/hr/2014-12-toy-problems && subl ."
+
+# typos
+alias gul='gulp'
+
+# open github repo 
+alias hb='hub browse'
+
+alias g="gulp"
+alias gprup="git pull --rebase upstream master"
